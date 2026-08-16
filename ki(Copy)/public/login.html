@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin — ARRZ MARKET</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-login">
+    <div class="admin-login__card">
+      <div class="admin-login__logo">
+        <span class="navbar__logo-mark">A</span>
+        <span>ARRZ MARKET — Admin</span>
+      </div>
+
+      <div class="admin-login__error" data-login-error></div>
+
+      <form data-login-form>
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.querySelector('[data-login-form]');
+    const errorBox = document.querySelector('[data-login-error]');
+
+    // Jika sudah login, langsung lempar ke dashboard
+    fetch('/api/admin/session', { credentials: 'same-origin' })
+      .then((r) => r.json())
+      .then((body) => {
+        if (body.authenticated) window.location.href = 'admin.html';
+      })
+      .catch(() => {});
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.remove('is-visible');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Memproses...';
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({
+            username: form.username.value.trim(),
+            password: form.password.value,
+          }),
+        });
+        const body = await res.json();
+        if (!res.ok) throw new Error(body.error || 'Login gagal.');
+        window.location.href = 'admin.html';
+      } catch (err) {
+        errorBox.textContent = err.message;
+        errorBox.classList.add('is-visible');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Masuk';
+      }
+    });
+  </script>
+</body>
+</html>
