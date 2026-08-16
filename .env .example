@@ -1,0 +1,18 @@
+# Server
+PORT=1669
+NODE_ENV=development
+
+# Supabase
+SUPABASE_URL=https://rjorraiiexiirhdjiniv.supabase.co
+SUPABASE_ANON_KEY=sb_publishable_Zcw9UyOheH9YT-FAmSuSwg_CvmcTLPA
+SUPABASE_SERVICE_ROLE_KEY=sb_secret_BR1uzVN056qbuNwoJGmZyw_MU9eQJLG
+
+# WhatsApp admin (format internasional tanpa +, contoh: 6281234567890)
+ADMIN_WHATSAPP=6282357961890
+
+# Session
+SESSION_SECRET=arrz-market-2026-random-secret-8f3k92jd7x
+
+# Admin awal (dipakai sekali untuk seed, hash password akan dibuat otomatis)
+ADMIN_USERNAME=kenzstr
+ADMIN_PASSWORD=qwerty
